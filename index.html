@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenuFlow • سوريا</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ <div id="loadingScreen" class="loading-screen">
+  <div class="loading-content">
+    <div class="loading-logo">
+      <img src="logo_kit.png" alt="شعار المطعم">
+    </div>
+    <div class="loading-brand"></div>
+    
+    <!-- شريط التقدم الجديد -->
+    <div class="progress-container">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <div class="progress-numbers">
+      <span id="progressPercent">0</span>%
+    </div>
+  </div>
+</div>
+
+  <!-- الهيدر الثابت فقط (شريط صغير) -->
+<header class="header">
+  <div class="wrap">
+    <div class="header__row">
+      <div class="header__logo-wrapper">
+        <img src="logo_kit.png" alt="MenuFlow" class="header__logo-img">
+        <span class="header__logo-sy"></span>
+      </div>
+      
+      <button id="cartBtn" class="header__cart">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>
+        </svg>
+        <span id="cartCount" class="header__cart-count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- المحتوى النازل (يتحرك مع التمرير) -->
+<main>
+  <div class="wrap">
+    <!-- قسم الهيرو الكبير -->
+    <section class="hero-section">
+      <h1 class="hero-title">أشهر المأكولات<br>توصلك لباب البيت</h1>
+      <p class="hero-subtitle">اطلب الآن من مطعمك المفضل في سوريا</p>
+      <button id="scrollToMenu" class="hero-btn">← أبداً الطلب</button>
+    </section>
+
+    <!-- قسم التصنيفات -->
+    <section class="categories-section">
+      <div class="categories-wrapper">
+        <button id="chipAll" class="category-btn category-btn--active" data-cat="all">الرئيسية</button>
+        <div id="chips" class="header__chips"></div>
+      </div>
+    </section>
+
+    <!-- شريط البحث -->
+    <div class="search-section">
+      <input id="searchInput" class="search-input" type="search" placeholder="ابحث في القائمة..." />
+    </div>
+
+    <!-- شبكة الأصناف -->
+    <section id="grid" class="grid"></section>
+  </div>
+</main>
+
+  <!-- سلة التسوق -->
+  <div id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer__overlay" id="drawerOverlay"></div>
+    <aside class="drawer__panel">
+      <div class="drawer__head">
+        <div>
+          <div class="drawer__title">سلة الطلب</div>
+          <div class="drawer__sub">الدفع: كاش فقط</div>
+        </div>
+        <button class="drawer__close" id="drawerClose">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6L18 18" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div id="cartItems" class="cart"></div>
+      <div class="drawer__foot">
+        <div class="drawer__total">
+          <span>المجموع</span>
+          <strong id="total">0</strong>
+        </div>
+        <button id="checkoutBtn" class="drawer__checkout-btn">إتمام الطلب</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- نافذة الطلب -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal__overlay" id="modalOverlay"></div>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <div class="modal__title">إتمام الطلب</div>
+        <button class="modal__close" id="modalClose">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6L18 18" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <form id="form" class="form">
+        <div class="form__row">
+          <label class="form__label">
+            <span>الاسم</span>
+            <input id="name" class="form__input" required placeholder="اسمك" />
+          </label>
+          <label class="form__label">
+            <span>رقم الجوال</span>
+            <input id="phone" class="form__input" required placeholder="09xxxxxxxx" />
+          </label>
+        </div>
+        <label class="form__label">
+          <span>تفاصيل إضافية</span>
+          <textarea id="notes" class="form__input" rows="3" placeholder="أي ملاحظات..."></textarea>
+        </label>
+        <div class="location-box">
+          <div class="location-box__header">
+            <div>
+              <div class="location-box__title">الموقع</div>
+              <div class="location-box__subtitle">حدد موقعك لإرساله مع الطلب</div>
+            </div>
+            <button id="geoBtn" class="location-box__btn" type="button">تحديد الموقع</button>
+          </div>
+          <div class="location-box__fields">
+            <input id="locText" class="form__input" placeholder="وصف الموقع (اختياري)" />
+            <input id="mapLink" class="form__input" readonly placeholder="رابط الخريطة" />
+          </div>
+        </div>
+        <button class="form__submit" type="submit">إرسال الطلب</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- تذييل الصفحة -->
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div>© 2026 MenuFlow</div>
+      <div class="footer__muted">جميع الحقوق محفوظة</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
